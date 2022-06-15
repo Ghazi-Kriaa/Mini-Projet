@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - miniProjet</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/miniProjet.styles.css" asp-append-version="true" />
+</head>
+<body>
+   
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <img src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/60/undefined/external-employers-back-to-work-flaticons-lineal-color-flat-icons.png"/>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EmployeSpace</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" ariahaspopup="true" aria-expanded="false">Administration</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="CreateRole">Create 
+Role</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="ListRoles">List 
+Roles</a>
+</div>
+</li>
+}
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employe" asp-action="index">Employe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Entreprise" asp-action="index">Entreprise</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            @using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+<div class="collapse navbar-collapse" id="collapsibleNavbar">
+<ul class="navbar-nav ml-auto">
+@*If the user is signed-in display Logout link*@
+@if(SignInManager.IsSignedIn(User))
+{
+<li class="nav-item">
+<form method="post" asp-controller="account" asp-action="logout">
+<button type="submit" style="width:auto"
+class="nav-link btn btn-link py-0">
+Logout @User.Identity.Name
+</button>
+</form>
+</li>
+}
+else
+{
+<li class="nav-item">
+<a class="nav-link" asp-controller="Account" asp-action="Register">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAGyElEQVRoge2Ze2yVZx3HP8/bc+m51NLLae1pR9uztmyhqFwqjmlgM3Obgiw2cRuOaIgJuo0Z45yo0R78Q5kas1GWOZMR3SpuZuwCQiDRRVooCmUoUEKHlJYWW3rK6eX0tOf2vo9/9PRwLm1PU99DTeSTNHne3/t9fs/v2+dynvbAbW6TEcRCFxDPE9t2fEEifwA4AI9A/LSpseHgXPoqmS1tdta53Yb4Zynlg8AaoBpYE32eUR/Pgs3Ipm+7XSLCu0j2C8RlhNwi4dPJOgHHkGKPRN6J4IuKzNr4+u4fXZlGd+v5yjZ3GXASKJlH9z7gk79vdPfGB2ecqgzzIqkmAmUfdbStXFYjCvNzzYPekeDpcx/K3n7PKiA7TlcS7V8f33lBjAiUn0i0L009W7JN53/49Ob8grzchKX10LrVeLwj1372UtPQRCBYOxXXFHYk51yQza4qWs5U22QyXnx++zdcBXm5zum0jvzc0p3bt1aaTcaOqZiiKjnJugUxoki+GW1q39pSL4xGg3U63Xh/H2M9VzEZDbanv1avAXIygfZksvaWLq3Ht+3YIJBbkGwEsFqy2113OJdNp53weLj05l4Uo5GlW5+iqtx5tyXbfH4iEKxF8vimbW6rROz5Q2PDgbRGdv7RmxsxZX1VKNKih5Hutrc2+od675l6Li+vsMW/10IhFJOJgPcGl95oAk1yZ/2jKFlZACx2Ft/o6LwKIAQ8IpDXgPRGwmbl1wL5mJR62ABDduLSNlpyXVPt0OgoHa//lvylS/G2t6OFwtRsegJrcXFMb7GYEiuR2GO5ZxtYwF15Vlh5x3/pIEqr18bpvrhAyBdrGqxWrMXF9J9oRTEYqHp0E9aSxP0/4BkyJgQUrsf6pxtcCDBkzbf0RFYtX05FeTmHjxzGP+7nclc34YiK0ZCFYjBQ+Ug9/SeO85FKF/ayxN9eRFVDfYPeJdHHPoTYbIzI9jkb0ROrzcZim40VK1bQcqwFv9/P4ZZ/sOG+lQAoBgPOz6ydtu8bB94/ITW5FkAKfrV3V8Nf4t8vyPG7pLom1j7y/jE+uNA9q77t7MW246fOxQ4JLWJ4M1mj+4yM3ejl761H6fIEsBgFtS4Hy1Y/iDCYYpqOD2Ofbaiayqt736Fj9QoeXlfHopybB+Sozz/4u32H2y9c6r43vlZDlvoY8IuMGQn5h3nv4BF8wcnDJaxKWi9cxz/+Lvc88OWYTtO0hH6a1Gj+WxstJ0/jKChEVSxM+IYGxsd9BUDKWpMitW5djVxuP0GeDda4FAptCsGI5LoPzvSMstw3QHZOEQB1q+rwjY1x9txZTEYjipJFIBhAapIBj2cqXVFcai9gAuwCXm7a1bAzo0bqKs1sdMWnnPwrYX2t4KqYQJ2KCsFn77ufIoeD8sUV2HNsdF7upLmlmRHfaHzKLiHFs72F8j2nx1CqKOpDTY0Nr0w3tq5GzLYCGO9JiRsVgWItjBmZYlntzdtJVVUVo2M+jjYfjZe82LS7YV+03Q1MawJ0NjJsWUJuoAODNpEQH8muJqzYZuh1k5qqaoxmG+29QYL+4de8V0+/NdexdTWiimx6Fj2Mw9+GNdyPKrIZNbvwWqe9F6Zgt9upqqrhmgSEPNP43Q29aTtF0c1IZ88Ah5r/Sd/AMKqm4Sot4sq/B5HyIpbsTu5yOVm/7hPYLGa9hkxAlw/E6zdG2LOvmd5+L2r0aK2tdlKYN3lJnAiEOHOhi6b9x9HrApqMLkY+aO8ioiZu5crSAlylBQmxK70eBocTTiXd0MXIsG88MakiWFyST2WSEYChkfGUmB5k5K5V6liE2WSgorQw5Z3M0NrKiJGK6Ew4HbmYTbfmgp0RI5Vlk0YURVBekp+JIVLIiJGeviEAAqEwnuGxTAyRQkbm/a9tl/j4kjJOnu/K2OZOJiNGpJS8+k4rY+OBTKSfloztRJ//1pmABf5+RE/SzshECP7lmV2T73Dysaz0t1uAMdU+a75I8l1/jqQ3Ek5vBHs5+fY0miieEHjS5ZsHMxp5tnF/pa/neImEYf2HnQNCrAVemLN8phffazx4RAo+p0tR80XI+p8/tf7tOUmnCz63++Bm4DVdi5oPkj5hMt39/NYHRtJJU5bW93e/XaDCL5Pjlc5Cyory9CoxgWA4wsn2lO83QVAiw6EfA99JlyPl+I0I8wsk/itmMq6qBCORjPyEZz+qntm+69DydEYSltb2xkP3a0L+OTm+0Eg4ZRs89Sm3263NpInNiPuVA1ZNyN/wP2YCQEDdeOGqr6fRTPLcS396EinSrsUFZGhCE/c2PvP54EIXcpv/K/4DUpeKHufXNNIAAAAASUVORK5CYII="/>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" asp-controller="Account" asp-action="Login">
+<img src="data:image/png;base64,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"/>
+</a>
+</li>
+}
+</ul>
+</div>
+
+        </nav>
+        
+    <header>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - miniProjet - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/CustomScript.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
